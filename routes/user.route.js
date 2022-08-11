@@ -2,13 +2,14 @@ const router = require('express').Router();
 let User = require('../models/user.model');
 
 router.route('/').get((req, res) => {
-  if (req.query.username == '' || req.query.username == undefined) {
-    User.find()
-      .then(users => res.json(users))
-      .catch(err => res.status(400).json('Error: ' + err));
+  if (req.query.email == '' || req.query.email == undefined) {
+    // User.find()
+    //   .then(users => res.json(users))
+    //   .catch(err => res.status(400).json('Error: ' + err));
+    res.status(400).json('Error: ' + err)
   }
   else {
-    User.findOne({username:new RegExp(`^${req.query.username}$`, 'i') }).then(users => res.json(users))
+    User.findOne({email:new RegExp(`^${req.query.email}$`, 'i') }).then(users => res.json(users))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 

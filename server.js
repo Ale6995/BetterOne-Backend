@@ -47,12 +47,15 @@ connection.once('open', () => {
 const usersRouter = require('./routes/user.route');
 app.use('/users', usersRouter);
 
+const postsRouter = require('./routes/userPost.route');
+app.use('/usersPost', postsRouter);
 
-const projectsRouter = require('./routes/project.route');
-app.use('/projects', projectsRouter);
 
-const tasksRouter = require('./routes/task.route');
-app.use('/tasks', tasksRouter);
+// const projectsRouter = require('./routes/project.route');
+// app.use('/projects', projectsRouter);
+
+// const tasksRouter = require('./routes/task.route');
+// app.use('/tasks', tasksRouter);
 
 
 app.listen(port, () => {
