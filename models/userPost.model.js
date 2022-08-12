@@ -10,6 +10,12 @@ const userPostSchema = new Schema({
     trim: true,
     minlength: 3
   },
+  userId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    default: [],
+    unique: false
+  },
   pictures: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "picture",
