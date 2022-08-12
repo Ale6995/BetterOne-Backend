@@ -8,6 +8,23 @@ router.route('/').get((req, res) => {
   
 });
 
+
+// router.route('/').get((req, res) => {
+// //if there is param user with the user id returns the projects where the user is assigned
+// console.log(req.query.user)
+//  if(req.query.user!=undefined && req.query.user!=''){
+//   Project.find({users: req.query.user})
+//   .then(projects => res.json(projects))
+//   .catch(err => res.status(400).json('Error: ' + err));
+//  }else{
+//   console.log("print all")
+//   Project.find()
+//   .then(projects => res.json(projects))
+//   .catch(err => res.status(400).json('Error: ' + err));
+//  }
+  
+// });
+
 router.route('/add').post((req, res) => {
   const userPost = req.body;
 

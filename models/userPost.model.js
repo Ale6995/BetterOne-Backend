@@ -16,12 +16,34 @@ const userPostSchema = new Schema({
     default: [],
     unique: false
   },
-  pictures: [{
+  picture1: {type: String,
+    required: true,
+        unique: false,
+        trim: true,
+        minlength: 3
+  },
+  picture2:{type: String,
+    required: true,
+        unique: false,
+        trim: true,
+        minlength: 3
+  },
+  likes1:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      default: [],
+      unique: false,
+      required:false, 
+  }
+  ],
+  likes2:[{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "picture",
+    ref: "user",
     default: [],
-    unique: true
-  }],
+    unique: false,
+    required:false, 
+}
+],
   comments:[
     {type: String,
         required: false,
