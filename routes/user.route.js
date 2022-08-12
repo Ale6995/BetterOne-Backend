@@ -3,10 +3,10 @@ let User = require('../models/user.model');
 
 router.route('/').get((req, res) => {
   if (req.query.email == '' || req.query.email == undefined) {
-    // User.find()
-    //   .then(users => res.json(users))
-    //   .catch(err => res.status(400).json('Error: ' + err));
-    res.status(400).json('Error: ' + err)
+    User.find()
+      .then(users => res.json(users))
+      .catch(err => res.status(400).json('Error: ' + err));
+    // res.status(400).json('Error: ' + err)
   }
   else {
     User.findOne({email:new RegExp(`^${req.query.email}$`, 'i') }).then(users => res.json(users))
