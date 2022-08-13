@@ -77,11 +77,11 @@ router.route('/myPosts').get((req, res) => {
 // });
 
 router.route('/add').post((req, res) => {
-  const userPost = req.body;
+  const post = req.body;
 
-  const newPost = new UserPost(userPost);
+  const newPost = new userPost(post);
 
-  userPost.save()
+  newPost.save()
     .then(() => res.json('post added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });

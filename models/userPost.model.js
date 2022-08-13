@@ -60,6 +60,6 @@ const userPostSchema = new Schema({
 //   next();
 // });
 
-const userPost = mongoose.model('userPost', userPostSchema);
+const UserPost = mongoose.model('userPost', userPostSchema);
 
 module.exports = UserPost;
