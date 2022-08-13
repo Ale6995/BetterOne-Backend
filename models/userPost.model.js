@@ -62,4 +62,4 @@ const userPostSchema = new Schema({
 
 const userPost = mongoose.model('userPost', userPostSchema);
 
-module.exports = userPost;
+module.exports = UserPost;
