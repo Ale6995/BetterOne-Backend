@@ -37,6 +37,7 @@ router.route('/myPosts').get((req, res) => {
  });
  router.route('/like').get((req, res) => {
     const index=Number(req.query.index);
+    const postId = req.query.postId;
     const userId = req.query.userId;
     if(index==1){
         userPost.updateOne({_id:postId}, {$addToSet:{likes1:userId},$pull: {likes2:userId}})
