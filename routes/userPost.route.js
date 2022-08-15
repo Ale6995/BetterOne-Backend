@@ -19,8 +19,18 @@ router.route('/randomPosts').get((req, res) => {
    }
    console.log(limit)
    userPost.aggregate(
-    [ {$match:{userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}},{ $sample: { size: limit } } ]
- ) .populate("userId").then(posts => res.json(posts))
+    [ 
+        {$match:{userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}},
+        { $sample: { size: limit } },
+        {
+        $lookup: {
+            from: "users",
+            localField: "userId",
+            foreignField: "_id",
+            as: "userId"
+        } }
+    ]
+ ).then(posts => res.json(posts))
  .catch(err => res.status(400).json('Error: ' + err));
     // userPost.find({userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}).limit(limit).skip(limit * page).populate("userId")
     //   .then(posts => res.json(posts))
