@@ -10,6 +10,12 @@ const userPostSchema = new Schema({
     trim: true,
     minlength: 3
   },
+  description: {
+    type: String,
+    required: false,
+    unique: false,
+    trim: true,
+  },
   userId:{
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let userPost = require('../models/userPost.model');
+let User = require('../models/user.model');
 
 router.route('/').get((req, res) => {
    var limit=10;
@@ -14,7 +15,7 @@ router.route('/').get((req, res) => {
         limit=Number(req.query.limit)
     }
    }
-    userPost.find({userId: {$ne: req.query.userId}}).limit(limit).skip(limit * page)
+    userPost.find({userId: {$ne: req.query.userId}}).limit(limit).skip(limit * page).populate("userId")
       .then(posts => res.json(posts))
       .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -31,7 +32,7 @@ router.route('/myPosts').get((req, res) => {
          limit=Number(req.query.limit)
      }
     }
-     userPost.find({userId: req.query.userId}).limit(limit).skip(limit * page)
+     userPost.find({userId: req.query.userId}).limit(limit).skip(limit * page).populate("userId")
        .then(posts => res.json(posts))
        .catch(err => res.status(400).json('Error: ' + err));
  });
