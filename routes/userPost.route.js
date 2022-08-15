@@ -5,19 +5,26 @@ let User = require('../models/user.model');
 router.route('/').get((req, res) => {
    var limit=10;
    var page=1;
-   if (req.query.limit!=""||req.query.limit!=undefined){
+   if (req.query.limit!=""&&req.query.limit!=undefined){
     if(Number(req.query.limit)!=NaN){
+        console.log("trueeee")
+        console.log(req.query.limit)
         limit=Number(req.query.limit)
     }
    }
    if (req.query.page!=""||req.query.page!=undefined){
     if(Number(req.query.page)!=NaN){
-        limit=Number(req.query.limit)
+        page=Number(req.query.page)
     }
    }
-    userPost.find({userId: {$ne: req.query.userId}}).limit(limit).skip(limit * page).populate("userId")
-      .then(posts => res.json(posts))
-      .catch(err => res.status(400).json('Error: ' + err));
+   console.log(limit)
+   userPost.aggregate(
+    [ {$match:{userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}},{ $sample: { size: limit } } ]
+ ) .then(posts => res.json(posts))
+ .catch(err => res.status(400).json('Error: ' + err));
+    // userPost.find({userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}).limit(limit).skip(limit * page).populate("userId")
+    //   .then(posts => res.json(posts))
+    //   .catch(err => res.status(400).json('Error: ' + err));
 });
 router.route('/myPosts').get((req, res) => {
     var limit=10;
