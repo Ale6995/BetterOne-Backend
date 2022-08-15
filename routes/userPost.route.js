@@ -2,8 +2,8 @@ const router = require('express').Router();
 let userPost = require('../models/userPost.model');
 let User = require('../models/user.model');
 
-router.route('/').get((req, res) => {
-   var limit=10;
+router.route('/randomPosts').get((req, res) => {
+   var limit=1;
    var page=1;
    if (req.query.limit!=""&&req.query.limit!=undefined){
     if(Number(req.query.limit)!=NaN){
@@ -20,7 +20,7 @@ router.route('/').get((req, res) => {
    console.log(limit)
    userPost.aggregate(
     [ {$match:{userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}},{ $sample: { size: limit } } ]
- ) .then(posts => res.json(posts))
+ ) .populate("userId").then(posts => res.json(posts))
  .catch(err => res.status(400).json('Error: ' + err));
     // userPost.find({userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}).limit(limit).skip(limit * page).populate("userId")
     //   .then(posts => res.json(posts))
