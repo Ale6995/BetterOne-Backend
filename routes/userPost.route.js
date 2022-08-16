@@ -1,4 +1,5 @@
 const router = require('express').Router();
+var mongoose = require('mongoose');
 let userPost = require('../models/userPost.model');
 let User = require('../models/user.model');
 
@@ -21,10 +22,9 @@ router.route('/randomPosts').get((req, res) => {
         {$match:{$and:[
             { $expr : { $ne: [ '$_id' , { $toObjectId: req.query.currentPost } ] } } ,
             { $expr : { $ne: [ '$userId' , { $toObjectId: req.query.userId } ] } },
-            { $expr : { $ne: [ '$likes2' , { $toObjectId: req.query.userId } ] } },
-            { $expr : { $ne: [ '$likes1' , { $toObjectId: req.query.userId } ] } }
+             { likes1: {$nin:[mongoose.Types.ObjectId(req.query.userId)] }},
+             { likes2: {$nin:[mongoose.Types.ObjectId(req.query.userId)] }}   
         ]}
-            
         },
         { $sample: { size: limit } },
         {
