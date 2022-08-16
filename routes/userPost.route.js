@@ -7,8 +7,6 @@ router.route('/randomPosts').get((req, res) => {
    var page=1;
    if (req.query.limit!=""&&req.query.limit!=undefined){
     if(Number(req.query.limit)!=NaN){
-        console.log("trueeee")
-        console.log(req.query.limit)
         limit=Number(req.query.limit)
     }
    }
@@ -17,10 +15,17 @@ router.route('/randomPosts').get((req, res) => {
         page=Number(req.query.page)
     }
    }
-   console.log(limit)
+   console.log(req.query.currentPost)
    userPost.aggregate(
     [ 
-        {$match:{userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}},
+        {$match:{$and:[
+            { $expr : { $ne: [ '$_id' , { $toObjectId: req.query.currentPost } ] } } ,
+            { $expr : { $ne: [ '$userId' , { $toObjectId: req.query.userId } ] } },
+            { $expr : { $ne: [ '$likes2' , { $toObjectId: req.query.userId } ] } },
+            { $expr : { $ne: [ '$likes1' , { $toObjectId: req.query.userId } ] } }
+        ]}
+            
+        },
         { $sample: { size: limit } },
         {
         $lookup: {
@@ -28,10 +33,31 @@ router.route('/randomPosts').get((req, res) => {
             localField: "userId",
             foreignField: "_id",
             as: "userId"
-        } }
+        } },
+        {$unwind:'$userId'}
     ]
  ).then(posts => res.json(posts))
  .catch(err => res.status(400).json('Error: ' + err));
+//    userPost.aggregate(
+//     [ 
+//         {$match:{$and:[
+//             {_id: {$ne: req.query.currentPost}},
+//             {userId: {$ne: req.query.userId}},
+//             {likes2:{$ne: req.query.userId}},
+//             {likes1:{$ne: req.query.userId}}
+//         ]}
+//             },
+//         { $sample: { size: limit } },
+//         {
+//         $lookup: {
+//             from: "users",
+//             localField: "userId",
+//             foreignField: "_id",
+//             as: "userId"
+//         } }
+//     ]
+//  ).then(posts => res.json(posts))
+//  .catch(err => res.status(400).json('Error: ' + err));
     // userPost.find({userId: {$ne: req.query.userId},likes2:{$ne: req.query.userId},likes1:{$ne: req.query.userId}}).limit(limit).skip(limit * page).populate("userId")
     //   .then(posts => res.json(posts))
     //   .catch(err => res.status(400).json('Error: ' + err));
